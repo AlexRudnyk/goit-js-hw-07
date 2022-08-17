@@ -30,17 +30,30 @@ const itemsMarkup = createGalleryItemsMarkup(galleryItems);
 
 galleryEl.insertAdjacentHTML("afterbegin", itemsMarkup);
 
-galleryEl.addEventListener("click", onModalOpenner);
+galleryEl.addEventListener("click", onGalleryItemClick);
 
-function onModalOpenner(evt) {
+function onGalleryItemClick(evt) {
   evt.preventDefault();
   if (!evt.target.classList.contains("gallery__image")) {
     return;
   }
 
-  console.log("TARGET: ", evt.target);
+  onModalOpen(evt);
+}
+
+function onModalOpen(evt) {
+  window.addEventListener("keydown", onModalClose);
+
   const instance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}">
+    <img src="${evt.target.dataset.source}" width="800" height="600" alt="${evt.target.alt}">
 `);
   instance.show();
+
+  function onModalClose(evt) {
+    console.log("EVENT CODE: ", evt.code);
+    if (evt.code === "Escape") {
+      instance.close();
+      window.removeEventListener("keydown", onModalClose);
+    }
+  }
 }
