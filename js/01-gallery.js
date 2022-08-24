@@ -51,6 +51,7 @@ function onModalOpen(evt) {
 
   function onModalClose(evt) {
     console.log("EVENT CODE: ", evt.code);
+    window.removeEventListener("click", onModalClose);
     if (evt.code === "Escape") {
       instance.close();
       window.removeEventListener("keydown", onModalClose);
